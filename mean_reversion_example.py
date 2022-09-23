@@ -21,7 +21,7 @@ logic() function:
 
 def logic(account, lookback): # Logic function to be used for each time interval in backtest 
     
-    today = len(lookback)-1
+    today = len(lookback) - 1
     if(today > training_period): # If the lookback is long enough to calculate the Bollinger Bands
 
         if(lookback['close'][today] < lookback['BOLD'][today]): # If current price is below lower Bollinger Band, enter a long position
@@ -35,6 +35,8 @@ def logic(account, lookback): # Logic function to be used for each time interval
                 account.close_position(position, 1, lookback['close'][today])
             if(account.buying_power > 0):
                 account.enter_position('short', account.buying_power, lookback['close'][today]) # Enter a short position
+
+
 
 '''
 preprocess_data() function:
@@ -54,6 +56,7 @@ def preprocess_data(list_of_stocks):
         df['MA-TP'] = df['TP'].rolling(training_period).mean() # Calculate Moving Average of Typical Price
         df['BOLU'] = df['MA-TP'] + standard_deviations*df['std'] # Calculate Upper Bollinger Band
         df['BOLD'] = df['MA-TP'] - standard_deviations*df['std'] # Calculate Lower Bollinger Band
+        df["RANDOM"] =5
         df.to_csv("data/" + stock + "_Processed.csv", index=False) # Save to CSV
         list_of_stocks_processed.append(stock + "_Processed")
     return list_of_stocks_processed
