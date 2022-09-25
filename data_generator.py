@@ -37,8 +37,12 @@ get_intraday_extended() function:
 """
 
 
-api.get_intraday_extended('AAPL', 'all', '', '1min', True)
+# api.get_intraday_extended('AAPL', 'all', '', '1min', True)
 # api.get_intraday_extended('GOOG', 'all', '', '1min', True)
-# api.get_intraday_extended('IBM', '01-01-2008', '01-03-2022', '1min', True)
-# api.get_intraday_extended('TSLA', 'year1month2', 'year1month1', '60min', True, False)
-# api.get_intraday_extended('TSLA', 'all', 'year1month1', '15min', True, True)
+# api.get_intraday_extended('JPM', '01-01-2015', '01-03-2022', '15min', True)
+# api.get_intraday_extended('META', '01-01-2015', '01-03-2022', '15min', True)
+# api.get_intraday_extended('CBX', '01-01-2015', '01-03-2022', '15min', True)
+# api.get_intraday_extended('JNJ', '01-01-2015', '01-03-2022', '15min', True)
+api.get_intraday_extended('XLU', 'all', '',  '15min', True)
+api.get_intraday_extended('XLF', 'all', '', '15min', True)
+api.get_intraday_extended('XME', 'all', '', '15min', True)

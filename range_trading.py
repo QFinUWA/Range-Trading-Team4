@@ -38,35 +38,89 @@ def logic(account, lookback):  # Logic function to be used for each time interva
 
         ##  SELL  ##
         # if lookback['rsi'][today] >= 70:
-        if lookback['%K'][today] >= 80:
+        if lookback['%K'][today] >= 60:
             # If today's price is above the upper Bollinger Band, enter a short position
             if (lookback['close'][today] > lookback['BOLU'][today]):
                 if mac > ma:
                     if (lookback["SIG"][dayBefore] > lookback["MACD"][dayBefore]):
                         if (mac - lookback["MACD"][dayBefore] > 0):
                             for position in account.positions:  # Close all current positions
-                                account.close_position(
-                                    position, 1, lookback['close'][today])
+                                account.close_position(position, 1, lookback['close'][today])
                             if (account.buying_power > 0):
                                 # Enter a short position
-                                account.enter_position(
-                                    'short', account.buying_power, lookback['close'][today])
+                                account.enter_position('short', account.buying_power, lookback['close'][today])
 
         ##  BUY  ##
         # if lookback['rsi'][today] <= 30:
-        if lookback['%K'][today] <= 20:
+        if lookback['%K'][today] <= 40:
             # If current price is below lower Bollinger Band, enter a long position
             if (lookback['close'][today] < lookback['BOLD'][today]):
                 if mac < ma:
                     if (lookback["SIG"][dayBefore] < lookback["MACD"][dayBefore]):
                         if (mac - lookback["MACD"][dayBefore] < 0):
                             for position in account.positions:  # Close all current positions
-                                account.close_position(
-                                    position, 1, lookback['close'][today])
+                                account.close_position(position, 1, lookback['close'][today])
                             if (account.buying_power > 0):
                                 # Enter a long position
-                                account.enter_position(
-                                    'long', account.buying_power, lookback['close'][today])
+                                account.enter_position('long', account.buying_power, lookback['close'][today])
+
+        ## STOIC and BOL ##
+
+        # if lookback['%K'][today] >= 80:
+        #     # If today's price is above the upper Bollinger Band, enter a short position
+        #     if (lookback['close'][today] > lookback['BOLU'][today]):
+        #         for position in account.positions:  # Close all current positions
+        #             account.close_position(position, 1, lookback['close'][today])
+        #         if (account.buying_power > 0):
+        #             # Enter a short position
+        #             account.enter_position('short', account.buying_power, lookback['close'][today])
+
+        # if lookback['%K'][today] <= 20:
+        #     # If current price is below lower Bollinger Band, enter a long position
+        #     if (lookback['close'][today] < lookback['BOLD'][today]):
+        #         for position in account.positions:  # Close all current positions
+        #             account.close_position(position, 1, lookback['close'][today])
+        #         if (account.buying_power > 0):
+        #             account.enter_position('long', account.buying_power, lookback['close'][today])
+        
+        ### STOIC and MAC
+        # if lookback['%K'][today] >= 80:
+        #     if mac > ma:
+        #         if (lookback["SIG"][dayBefore] > lookback["MACD"][dayBefore]):
+        #             if (mac - lookback["MACD"][dayBefore] > 0):
+        #                 for position in account.positions:  # Close all current positions                                
+        #                     account.close_position(position, 1, lookback['close'][today])
+        #                 if (account.buying_power > 0):
+        #                     # Enter a short position
+        #                     account.enter_position('short', account.buying_power, lookback['close'][today])
+        # if lookback['%K'][today] <= 20:
+        #     if mac < ma:
+        #         if (lookback["SIG"][dayBefore] < lookback["MACD"][dayBefore]):
+        #             if (mac - lookback["MACD"][dayBefore] < 0):
+        #                 for position in account.positions:  # Close all current positions
+        #                     account.close_position(position, 1, lookback['close'][today])
+        #                 if (account.buying_power > 0):
+        #                     # Enter a long position
+        #                     account.enter_position('long', account.buying_power, lookback['close'][today])
+
+        ### STOIC ###
+        # if lookback['%K'][today] >= 80:
+        #     for position in account.positions:  # Close all current positions                                
+        #         account.close_position(position, 1, lookback['close'][today])
+        #     if (account.buying_power > 0):
+        #         # Enter a short position
+        #         account.enter_position('short', account.buying_power, lookback['close'][today])
+        
+        # if lookback['%K'][today] <= 20:
+        #     for position in account.positions:  # Close all current positions
+        #         account.close_position(position, 1, lookback['close'][today])
+        #     if (account.buying_power > 0):
+        #         # Enter a long position
+        #         account.enter_position('long', account.buying_power, lookback['close'][today])
+
+
+
+        
 
 
 '''
@@ -165,8 +219,7 @@ def preprocess_data(list_of_stocks):
         # Adds an "n_low" column with min value of previous 14 periods
         df['n_low'] = df['low'].rolling(k_period).min()
         # Uses the min/max values to calculate the %k (as a percentage)
-        df['%K'] = (df['close'] - df['n_low']) * \
-         100 / (df['n_high'] - df['n_low'])
+        df['%K'] = (df['close'] - df['n_low']) * 100 / (df['n_high'] - df['n_low'])
 
         ## BOLLINGER BANDS ##
 
