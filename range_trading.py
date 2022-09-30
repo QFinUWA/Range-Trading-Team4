@@ -7,6 +7,8 @@ import numpy as np
 from backtester import engine, tester
 from backtester import API_Interface as api
 
+pd.options.mode.chained_assignment = None  # default='warn'
+
 training_period = 20 # How far the rolling average takes into calculation
 standard_deviations = 3.5 # Number of Standard Deviations from the mean the Bollinger Bands sit
 
@@ -32,17 +34,25 @@ def logic(account, lookback): # Logic function to be used for each time interval
     '''
 
     #Buy at support
-    hour = int(str(df['date'][today]).split(' ')[1].split(':')[0])
-    if hour < 15 and df['close'][today] > df['BOLD'][today] and df['RSI'][today] > 40 and df['%K'][today] < 50 and df['%std'][today] > 0.015:
+    hour = int(str(lookback['date'][today]).split(' ')[1].split(':')[0])
+    if hour < 15 and lookback['close'][today] > lookback['BOLD'][today] and lookback['RSI'][today] > 40 and lookback['%K'][today] < 50 and lookback['%std'][today] > 0.015:
         #buy, sell 6 periods later
-        print()
+        for position in account.positions:  # Close all current positions
+            account.close_position(position, 1, lookback['close'][today])
+        if (account.buying_power > 0):
+            # Enter a long position
+            account.enter_position('long', account.buying_power, lookback['close'][today])
 
 
 
     #Sell at resistance
-    if hour > 15 and df['close'][today] < df['BOLU'][today] and df['RSI'][today] < 60 and df['%K'][today] < 50 and df['%std'][today] > 0.015:
+    if hour > 15 and lookback['close'][today] < lookback['BOLU'][today] and lookback['RSI'][today] < 60 and lookback['%K'][today] < 50 and lookback['%std'][today] > 0.015:
         #sell, buy 6 periods later
-        print()
+        for position in account.positions:  # Close all current positions
+            account.close_position(position, 1, lookback['close'][today])
+        if (account.buying_power > 0):
+            # Enter a short position
+            account.enter_position('short', account.buying_power, lookback['close'][today])
 
 
 
