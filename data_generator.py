@@ -43,6 +43,8 @@ get_intraday_extended() function:
 # api.get_intraday_extended('META', '01-01-2015', '01-03-2022', '15min', True)
 # api.get_intraday_extended('CBX', '01-01-2015', '01-03-2022', '15min', True)
 # api.get_intraday_extended('JNJ', '01-01-2015', '01-03-2022', '15min', True)
-api.get_intraday_extended('XLU', 'all', '',  '15min', True)
-api.get_intraday_extended('XLF', 'all', '', '15min', True)
-api.get_intraday_extended('XME', 'all', '', '15min', True)
+# api.get_intraday_extended('XLU', 'all', '',  '15min', True)
+# api.get_intraday_extended('XLF', 'all', '', '15min', True)
+# api.get_intraday_extended('XME', 'all', '', '15min', True)
+api.get_intraday_extended('VOO', 'all', '', '15min', True)
+
